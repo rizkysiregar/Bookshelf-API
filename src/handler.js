@@ -6,18 +6,35 @@ const addBookHandler = (request, h) => {
 
     // generate id, insertAt, updateAt
     const id = nanoid(16); // uniqe with 16 long characther
-    const finished = false;
+    var finished = false;
+
+    if(pageCount === readPage){
+      finished = true;
+    }else{
+      finished = false;
+    }
+
     const insertAt = new Date().toISOString();
     const updateAt = insertAt;
 
     const newBook = {
         name, year, author, summary, publisher, pageCount, readPage, reading, id, finished, insertAt, updateAt,
     };
-
+    
     books.push(newBook);
 
     // check if success 
     const isSuccess = books.filter((book) => book.id === id).length > 0;
+    const isNull = books.fill((book) => book.name === null || book.name === 'undefined');
+
+    if(isNull) {
+      const response = h.response({
+          status: 'fail',
+          message:'Gagal menambahkan buku. Mohon Isi nama buku!!',
+      });
+      response.code(400);
+      return response;
+    }
 
     if (isSuccess) {
         const response = h.response({
@@ -28,18 +45,17 @@ const addBookHandler = (request, h) => {
           },
         });
         response.code(201);
-        response.header('Access-Control-Allow-Origin', '*');
         return response;
       }
+    
+  
       const response = h.response({
         status: 'fail',
         message: 'Buku gagal ditambahkan',
       });
       response.code(500);
-      response.header('Access-Control-Allow-Origin', '*');
       return response;
 };
-
 
 
 module.exports = {addBookHandler}
