@@ -9,8 +9,8 @@ const addNewBookHandler = (request, h) => {
 
     // create automatic variable
     const id  = nanoid(16); // nano id 16 digit
-    const insertAt = new Date().toISOString(); // get date as String value
-    const updateAt = insertAt; // same value as insertAt
+    const insertedAt = new Date().toISOString(); // get date as String value
+    const updatedAt = insertedAt; // same value as insertAt
     const finished = pageCount === readPage;
     
     // build new object with complete  value
@@ -25,8 +25,8 @@ const addNewBookHandler = (request, h) => {
         readPage,
         finished,
         reading,
-        insertAt,
-        updateAt,
+        insertedAt,
+        updatedAt,
     };
 
 
@@ -36,7 +36,7 @@ const addNewBookHandler = (request, h) => {
             status: 'fail',
             message: 'Gagal menambahkan buku. Mohon isi nama buku',
         });
-        response.code = 400;
+        response.code(400);
         return response;
     }
 
