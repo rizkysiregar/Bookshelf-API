@@ -16,7 +16,7 @@ const updateBookByIdHandler = (request, h) => {
         reading,
     } = request.payload;
     const finished = readPage === pageCount;
-    const updateAt = new Date().toISOString();
+    const updatedAt = new Date().toISOString();
 
     // find index by id
     const index = books.findIndex((book) => book.id === id);
@@ -34,7 +34,7 @@ const updateBookByIdHandler = (request, h) => {
             readPage,
             reading,
             finished,
-            updateAt,
+            updatedAt,
         };
 
         // if name property is null or not inputed
