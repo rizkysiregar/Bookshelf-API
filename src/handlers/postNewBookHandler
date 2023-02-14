@@ -1,5 +1,5 @@
 const { nanoid } = require("nanoid");
-const books = require("../books");
+const {books} = require("../books");
 
 
 const addNewBookHandler = (request, h) => {
@@ -29,6 +29,7 @@ const addNewBookHandler = (request, h) => {
         updateAt,
     };
 
+
     // jika properti nama buku kosong atau undifined
     if(newBook.name === null || newBook.name === undefined){
         const response = h.response({
@@ -49,6 +50,7 @@ const addNewBookHandler = (request, h) => {
     }
 
     books.push(newBook);
+    
 
     const isSuccess = books.filter((b) => b.id === id).length > 0;
 
@@ -56,6 +58,9 @@ const addNewBookHandler = (request, h) => {
         const response = h.response({
             status: 'success',
             message: "Buku berhasil ditambahkan",
+            data: {
+                bookId: newBook.id
+            }
         });
         response.code(201);
         return response;

@@ -1,4 +1,4 @@
 // create books array for contain object 
 const books = [];
 
-module.exports = books;
+module.exports = {books};

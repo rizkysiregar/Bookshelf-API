@@ -1,0 +1,78 @@
+const { books } = require("../books");
+
+const updateBookByIdHandler = (request, h) => {
+    // get id
+    const { id } = request.params;
+
+    // get property that can be updated
+    const {
+        name,
+        year,
+        author,
+        summary,
+        publisher,
+        pageCount,
+        readPage,
+        reading,
+    } = request.payload;
+    const finished = readPage === pageCount;
+    const updateAt = new Date().toISOString();
+
+    // find index by id
+    const index = books.findIndex((book) => book.id === id);
+
+    // if index not found
+    if(index !== -1){
+        books[index] = {
+            ...books[index],
+            name,
+            year,
+            author,
+            summary,
+            publisher,
+            pageCount,
+            readPage,
+            reading,
+            finished,
+            updateAt,
+        };
+
+        // if name property is null or not inputed
+        if(!name){
+            const response = h.response({
+                status: 'fail',
+                message: 'Gagal memperbaharui buku. Mohon isi nama buku',
+            });
+            response.code(400);
+            return response;
+        }
+
+        // if property readpage more bigger that page count
+        if(readPage > pageCount){
+            const response = h.response({
+                status: 'fail',
+                message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
+            });
+            response.code(400)
+            return response;
+        }
+
+        const response = h.response({
+            status: 'success',
+            message: 'Buku berhasil diperbaharui',
+        });
+        response.code(200);
+        return response;
+    }
+
+    // id not found
+    const response = h.response({
+        status: 'fail',
+        message: 'Gagal memperbarui buku. Id tidak ditemukan',
+    });
+    response.code(404);
+    return response;
+
+};
+
+module.exports = {updateBookByIdHandler};
